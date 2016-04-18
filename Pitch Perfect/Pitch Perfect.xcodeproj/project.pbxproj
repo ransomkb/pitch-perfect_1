@@ -165,6 +165,8 @@
 		5EFE129E1ACFD1CB001202EE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0730;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = "Hart Book";
 				TargetAttributes = {

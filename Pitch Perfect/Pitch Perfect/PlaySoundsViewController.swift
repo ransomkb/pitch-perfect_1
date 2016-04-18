@@ -21,12 +21,12 @@ class PlaySoundsViewController: UIViewController {
         super.viewDidLoad()
         
         // Set up audio equipment.
-        audioPlayer = AVAudioPlayer(contentsOfURL: receivedAudio.filePathURL, error: nil)
+        audioPlayer = try? AVAudioPlayer(contentsOfURL: receivedAudio.filePathURL)
         audioPlayer.enableRate = true
         
         audioEngine = AVAudioEngine()
         // Convert the url of a filepath to AVAudioFile type
-        audioFile = AVAudioFile(forReading: receivedAudio.filePathURL, error: nil)
+        audioFile = try? AVAudioFile(forReading: receivedAudio.filePathURL)
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,7 +86,10 @@ class PlaySoundsViewController: UIViewController {
         
         // Prepare system for playing.
         audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
-        audioEngine.startAndReturnError(nil)
+        do {
+            try audioEngine.startAndReturnError()
+        } catch _ {
+        }
         
         audioPlayerNode.play()
     }
