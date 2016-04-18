@@ -44,25 +44,29 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         recordButton.enabled = false
         
         // Prepare to record; use the date as the title.
-        var currentDateTime = NSDate()
-        var formatter = NSDateFormatter()
+        let currentDateTime = NSDate()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "MMddyyyy-HHmmss"
-        var recordingName = formatter.stringFromDate(currentDateTime)+".wav"
+        let recordingName = formatter.stringFromDate(currentDateTime)+".wav"
         
         // Set the filePath used for saving the recording data.
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] 
-        var pathArray = [dirPath, recordingName]
+        let pathArray = [dirPath, recordingName]
         let filePath = NSURL.fileURLWithPathComponents(pathArray)
         
         // Create a session to handle system events: phone calls, etc.
-        var session = AVAudioSession.sharedInstance()
+        let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
         } catch _ {
         }
         
         // Record the user's voice.
-        audioRecorder = try? AVAudioRecorder(URL: filePath, settings: nil)
+        // Not sure if settings are correct. Just added to get it working as nil is no longer acceptable.
+        // Had trouble, so eliminated all except the first one in the dictionary. It seems to be OK.
+        let recordSettings = [AVSampleRateKey : NSNumber(float: Float(44100.0))]
+
+        audioRecorder = try? AVAudioRecorder(URL: filePath!, settings: recordSettings)
         audioRecorder.delegate = self
         audioRecorder.meteringEnabled = true
         audioRecorder.prepareToRecord()
